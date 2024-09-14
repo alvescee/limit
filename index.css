@@ -33,6 +33,7 @@ section {
 
     border-radius: 1%;
     box-shadow: 0 0 10px 0.1px var(--other);
+    overflow: hidden;
 }
 
 aside.view {
@@ -65,6 +66,9 @@ figure.view {
 
 input[type="radio"]:checked + label figure {
     animation: changeViewColor 1s;
+    animation-direction: reverse;
+    animation-duration: 1s;
+    animation-name: upView;
     background-color: var(--second);
 }
 
@@ -75,5 +79,28 @@ input[type="radio"]:checked + label figure {
   
     100% {
         background-color: var(--second);
+    }
+}
+
+article.control {
+    position: relative;
+    height: 100%;
+    background-color: red;
+}
+
+article.layer {
+    position: relative;
+    height: 100%;
+    background-color: blue;
+}
+
+@keyframes directionView {
+    
+    0% {
+        top: 0;
+    }
+
+    100% {
+        top: -100%;
     }
 }
