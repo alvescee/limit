@@ -1,3 +1,9 @@
+:root {
+    --primary: rgb(217, 223, 236);
+    --second: rgb(48, 120, 7);
+    --other: rgb(0, 0, 0);
+}
+
 body {
     display: grid;
     
@@ -5,6 +11,8 @@ body {
 
     height: 100vh;
     width: 100vw;
+
+    background-color: var(--primary);
 }
 
 body, body * {
@@ -15,9 +23,57 @@ body, body * {
 
 #map {
     margin: 2%;
+    border-radius: 1%;
+    box-shadow: 0 0 10px 0.1px var(--other);
 }
 
 section {
-    background-color: blue;
+    background-color: var(--primary);
     margin: 2%;
+
+    border-radius: 1%;
+    box-shadow: 0 0 10px 0.1px var(--other);
+}
+
+aside.view {
+    background-color: transparent;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 50%;
+    left: 99%;
+    transform: translate(-200%, -50%);
+}
+
+input.view {
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+figure.view {
+    border: 1px solid var(--second);
+    display: block;
+    border-radius: 100px;
+    height: 10px;
+    width: 10px;
+    margin: 20%;
+
+    box-shadow: 0 0 10px 0.1px rgb(122, 122, 122);
+}
+
+input[type="radio"]:checked + label figure {
+    animation: changeViewColor 1s;
+    background-color: var(--second);
+}
+
+@keyframes changeViewColor {
+    0% {
+      background-color: transparent;
+    }
+  
+    100% {
+        background-color: var(--second);
+    }
 }

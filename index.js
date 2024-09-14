@@ -17,3 +17,18 @@ function onMapClick(e) {
     alert("You clicked the map at " + e.latlng);
     console.log(e)
 }
+
+window.addEventListener('load', () => {
+
+    const input = document.querySelectorAll("input.view");
+
+    const changeView = (input, fun) => {
+        input.addEventListener('click', () => {
+            fun();
+        })        
+    }
+    
+    changeView(input[0], () => {console.log(input[0].value)});
+
+    changeView(input[1], () => {console.log(input[1].value)});
+})
