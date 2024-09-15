@@ -1,11 +1,64 @@
+// Imports
+import {mock} from "./model/area.js";
+import a from "./model/area.js";
+
 const elements = {
     map: () => document.querySelector("#map"),
     ratio: () => document.querySelectorAll("input.view"),
     sect: () => document.querySelector("section"),
-    article: n => document.querySelector('article.' + n)
+    article: n => document.querySelector('article.' + n),
+    control: () => document.querySelector('article.control')
 }
 
+window.addEventListener('load', () => {
+    
+    mock.forEach(area => {
+        addArea(area)
+    })
+})
+
 // About the map
+
+function addArea (area) {
+
+    const control = elements.control();
+    const id = area.id;
+
+    const areaInControl = () => {
+
+        // Add a figure
+        const figure = document.createElement('figure');
+        figure.classList = "area";
+        figure.id = "a" + id;
+        figure.setAttribute('data-id', id);
+
+        // Set color with change the opacity
+        figure.style.boxShadow = "0 0 3px 1px " + area.category.color + "cc";
+
+        // Function to create p
+        const newP = (className, idName, message) => {
+            const p = document.createElement('p');
+            p.classList = className;
+            p.id = idName + id;            
+            p.innerText = message;
+
+            figure.appendChild(p);
+        }
+
+        // Add the name text
+        newP("name", "na", area.name);
+
+        // Add the category text
+        newP("category", "c", area.category.type);
+
+        // Add the tax
+        newP("tax", "t", area.tax + "%");
+
+        control.appendChild(figure);
+    }
+
+    areaInControl();
+} 
 
 window.addEventListener('load', () => {
     const city = [-22.28036, -42.534943];

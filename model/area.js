@@ -19,13 +19,13 @@ export default class area {
 }
 
 const categorys = {
-    1: {type: "Residência", color: "#ffffff"},
-    2: {type: "Preservação", color: "#ffffff"},
-    3: {type: "Transporte", color: "#ffffff"},
-    4: {type: "Comércio", color: "#ffffff"},
-    5: {type: "Indústria", color: "#ffffff"},
-    6: {type: "Agricultura", color: "#ffffff"},
-    7: {type: "Turismo", color: "#ffffff"},
+    1: {type: "Residência", color: "#ff8c00"},
+    2: {type: "Preservação", color: "#6fff00"},
+    3: {type: "Transporte", color: "#005dfd"},
+    4: {type: "Comércio", color: "#ff00fb"},
+    5: {type: "Indústria", color: "#474747"},
+    6: {type: "Agricultura", color: "#471501"},
+    7: {type: "Turismo", color: "#fdca00"},
 }
 
 // Mock
@@ -47,11 +47,28 @@ function make () {
     a2.addPoint(-22.2770492069499, -42.540396861553674);
     mock[1] = a2;
 
-    var a3 = new area(3, "Conselheiro", 12, 3);
+    var a3 = new area(3, "Conselheiro Paulino", 12, 3);
     a3.addPoint(-22.23140219909813, -42.522694431295804);
     a3.addPoint(-22.23268299147669, -42.52271589090612);
     a3.addPoint(-22.230727803159574, -42.52082756730495);
     mock[2] = a3;
+
+    var a4 = new area(3, "Olaria", 3.76, 3);
+    a3.addPoint(-22.23140219909813, -42.522694431295804);
+    a3.addPoint(-22.23268299147669, -42.52271589090612);
+    a3.addPoint(-22.230727803159574, -42.52082756730495);
+    mock[3] = a4;
+
+    var a4 = new area(3, "Olaria", 3.76, 3);
+    a3.addPoint(-22.23140219909813, -42.522694431295804);
+    a3.addPoint(-22.23268299147669, -42.52271589090612);
+    a3.addPoint(-22.230727803159574, -42.52082756730495);
+    mock[4] = a4;
+
+    mock[5] = a4;
+    mock[6] = a4;
+    mock[7] = a4
+    mock[8] = a3;
 }
 
 make();
