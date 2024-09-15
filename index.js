@@ -7,7 +7,8 @@ const elements = {
     ratio: () => document.querySelectorAll("input.view"),
     sect: () => document.querySelector("section"),
     article: n => document.querySelector('article.' + n),
-    control: () => document.querySelector('article.control')
+    control: () => document.querySelector('article.control'),
+    main: () => document.querySelector('main'),
 }
 
 window.addEventListener('load', () => {
@@ -81,7 +82,9 @@ function onMapClick(e) {
 
 // About the ratio button to change the view
 
-let waitBeforeWheelAgain = false;
+let isPass = false;
+let isSelectingText = false;
+let positionInitialX = 0;
 const durationInAnimationUp = 0.3;
 
 window.addEventListener('load', () => {
@@ -90,57 +93,74 @@ window.addEventListener('load', () => {
     const sect = elements.sect();
 
     input[0].addEventListener('change', () => {
-        modeView(true, 0);
+        smoothScrollBy(-1)
     })
 
     input[1].addEventListener('change', () => {
-        modeView(false, "-100%");
+        smoothScrollBy(1)
     })
 
-    sect.addEventListener("wheel", () => {
+    sect.addEventListener("mouseup", action => {
 
-        if (waitBeforeWheelAgain == true) {
+        if (isSelectingText == true) {
             return;
         }
 
-        if (input[0].checked == true) {
-            input[1].checked = true;
-            modeView(false, "-100%");
-        } else {
+        const direction = action.screenX - positionInitialX;
+
+        // To left
+        if (direction > 10 && !input[0].checked) {
             input[0].checked = true;
-            modeView(true, 0);
+            smoothScrollBy(-1)
         }
 
-        waitBeforeWheelAgain = true;
+        // To right
+        else if (direction < -10 && !input[1].checked) {
+            input[1].checked = true;
+            smoothScrollBy(1)
+        }
+    })
+
+    sect.addEventListener("mousedown", action => {
+        positionInitialX = action.screenX;
+    })
+
+    document.addEventListener("selectionchange", e => {
+
+        isSelectingText = true;
 
         setTimeout(() => {
-            waitBeforeWheelAgain = false;
-        }, durationInAnimationUp * 1000);
+            isSelectingText = false;
+        }, 100);
     })
 
 })
 
-function modeView (isReverse, topFinal) {
+function smoothScrollBy(direct) {
 
-    const view = name => {
-        let e = elements.article(name).style;
-        
-        e.animationName = "directionView";
-        e.animationDuration = durationInAnimationUp + "s";
+    const element = elements.main();
+    const x = element.scrollWidth * direct;
 
-        if (isReverse) {
-            e.animationDirection = "reverse";    
+    const startX = element.scrollLeft;
+    const endX = startX + x;
+    
+    const startTime = performance.now();
+  
+    function step(currentTime) {
+
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / (durationInAnimationUp * 1000), 1);
+        const scrollX = startX + (endX - startX) * progress;
+        element.scrollLeft = scrollX;
+  
+        if (elapsed < (durationInAnimationUp * 1000)) {
+            requestAnimationFrame(step);
+        } else {
+            element.scrollLeft = endX;
         }
-
-        e.top = topFinal;
-
-        setTimeout(() => {
-            e.animation = "";
-        }, durationInAnimationUp * 1000)
     }
-
-    view("control");
-    view("layer");
-}
+  
+    requestAnimationFrame(step);
+}  
 
 // ---
