@@ -1,10 +1,17 @@
+const elements = {
+    map: () => document.querySelector("#map"),
+    ratio: () => document.querySelectorAll("input.view"),
+    sect: () => document.querySelector("section"),
+    article: n => document.querySelector('article.' + n)
+}
+
 // About the map
 
 window.addEventListener('load', () => {
     const city = [-22.28036, -42.534943];
     const zoom = 12;
 
-    var map = document.querySelector("#map");
+    var map = elements.map();
 
     map = L.map('map').setView(city, zoom);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -16,8 +23,7 @@ window.addEventListener('load', () => {
 })
 
 function onMapClick(e) {
-    alert("You clicked the map at " + e.latlng);
-    console.log(e)
+    alert(e.latlng.lat + ", " + e.latlng.lng);
 }
 
 // About the ratio button to change the view
@@ -27,8 +33,8 @@ const durationInAnimationUp = 0.3;
 
 window.addEventListener('load', () => {
 
-    const input = document.querySelectorAll("input.view");
-    const sect = document.querySelector("section");
+    const input = elements.ratio();
+    const sect = elements.sect();
 
     input[0].addEventListener('change', () => {
         modeView(true, 0);
@@ -64,7 +70,7 @@ window.addEventListener('load', () => {
 function modeView (isReverse, topFinal) {
 
     const view = name => {
-        let e = document.querySelector('article.' + name).style;
+        let e = elements.article(name).style;
         
         e.animationName = "directionView";
         e.animationDuration = durationInAnimationUp + "s";
