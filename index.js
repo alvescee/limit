@@ -34,7 +34,7 @@ window.addEventListener('load', () => {
 })
 
 function onMapClick(e) {
-    alert(e.latlng.lat + ", " + e.latlng.lng);
+    console.log(e.latlng.lat + ", " + e.latlng.lng);
 }
 
 window.addEventListener('load', () => {

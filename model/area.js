@@ -26,6 +26,16 @@ export default class area {
 
         return [allPoints];
     }
+
+    getPointsReverse () {
+        let allPoints = [];
+
+        this.points.forEach(p => {
+            allPoints.push([p.x, p.y])
+        })
+
+        return [allPoints];   
+    }
 }
 
 const categorys = {

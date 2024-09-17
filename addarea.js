@@ -67,7 +67,43 @@ function areaInControl (area, control, id, leaflet) {
 
     control.appendChild(figure);
 
+    figure.addEventListener('mouseenter', () => {
+        map.setView(calcCenterPolygon(area.getPoints()[0]), 16);
+    })
+
     return figure;
+}
+
+function calcCenterPolygon (line) {
+
+    const n = line.length;
+
+    if (n < 3) {
+        throw new Error("Um polígono deve ter pelo menos 3 vértices.");
+    }
+
+    let area = 0;
+    let cx = 0;
+    let cy = 0;
+
+    for (let i = 0; i < n; i++) {
+        const x1 = line[i][0];
+        const y1 = line[i][1];
+        const x2 = line[(i + 1) % n][0];
+        const y2 = line[(i + 1) % n][1];
+
+        const f = x1 * y2 - x2 * y1;
+        area += f;
+        cx += (x1 + x2) * f;
+        cy += (y1 + y2) * f;
+    }
+
+    area /= 2;
+    const factor = 1 / (6 * area);
+    cx *= factor;
+    cy *= factor;
+
+    return [cy, cx];
 }
 
 function areaInMap (area) {
