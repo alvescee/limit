@@ -1,9 +1,15 @@
 // Imports
 import {mock} from "./model/area.js";
 import a from "./model/area.js";
+import addArea from "./addarea.js";
 
-const elements = {
-    map: () => document.querySelector("#map"),
+export var map;
+
+window.addEventListener('load', () => {
+    map = document.querySelector("#map");
+})
+
+export const elements = {
     ratio: () => document.querySelectorAll("input.view"),
     sect: () => document.querySelector("section"),
     article: n => document.querySelector('article.' + n),
@@ -11,63 +17,14 @@ const elements = {
     main: () => document.querySelector('main'),
 }
 
-window.addEventListener('load', () => {
-    
-    mock.forEach(area => {
-        addArea(area)
-    })
-})
-
 // About the map
-
-function addArea (area) {
-
-    const control = elements.control();
-    const id = area.id;
-
-    const areaInControl = () => {
-
-        // Add a figure
-        const figure = document.createElement('figure');
-        figure.classList = "area";
-        figure.id = "a" + id;
-        figure.setAttribute('data-id', id);
-
-        // Set color with change the opacity
-        figure.style.boxShadow = "0 0 3px 1px " + area.category.color + "cc";
-
-        // Function to create p
-        const newP = (className, idName, message) => {
-            const p = document.createElement('p');
-            p.classList = className;
-            p.id = idName + id;            
-            p.innerText = message;
-
-            figure.appendChild(p);
-        }
-
-        // Add the name text
-        newP("name", "na", area.name);
-
-        // Add the category text
-        newP("category", "c", area.category.type);
-
-        // Add the tax
-        newP("tax", "t", area.tax + "%");
-
-        control.appendChild(figure);
-    }
-
-    areaInControl();
-} 
 
 window.addEventListener('load', () => {
     const city = [-22.28036, -42.534943];
     const zoom = 12;
 
-    var map = elements.map();
-
     map = L.map('map').setView(city, zoom);
+
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -79,6 +36,13 @@ window.addEventListener('load', () => {
 function onMapClick(e) {
     alert(e.latlng.lat + ", " + e.latlng.lng);
 }
+
+window.addEventListener('load', () => {
+    
+    mock.forEach(area => {
+        addArea(area)
+    })
+})
 
 // About the ratio button to change the view
 

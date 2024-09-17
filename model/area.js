@@ -16,6 +16,16 @@ export default class area {
     removePoint (p) {
         this.points.splice(p, 1);
     }
+
+    getPoints () {
+        let allPoints = [];
+
+        this.points.forEach(p => {
+            allPoints.push([p.y, p.x])
+        })
+
+        return [allPoints];
+    }
 }
 
 const categorys = {
