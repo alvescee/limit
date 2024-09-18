@@ -15,6 +15,7 @@ export const elements = {
     article: n => document.querySelector('article.' + n),
     control: () => document.querySelector('article.control'),
     main: () => document.querySelector('main'),
+    range: () => document.querySelector('#range')
 }
 
 // About the map
@@ -34,7 +35,22 @@ window.addEventListener('load', () => {
 })
 
 function onMapClick(e) {
-    console.log(e.latlng.lat + ", " + e.latlng.lng);
+    
+    if (layer == 0) {
+        citizenLayer();
+    }
+
+    else if (layer == 1) {
+        cityLayer();
+    }
+
+    else if (layer == 2) {
+        stateLayer();
+    }
+
+    else if (layer == 3) {
+        federalLayer();
+    }
 }
 
 window.addEventListener('load', () => {
@@ -127,4 +143,51 @@ function smoothScrollBy(direct) {
     requestAnimationFrame(step);
 }  
 
-// ---
+// Choose layer
+
+var layer = 0;
+
+window.addEventListener('load', () => {
+
+    const range = elements.range();
+
+    range.addEventListener('click', e => {
+        
+        if (range.value > 81) {
+            range.value = 100;
+            layer = 3;
+        } 
+        
+        else if (range.value > 51) {
+            range.value = 66;
+            layer = 2;
+        } 
+        
+        else if (range.value > 17) {
+            range.value = 34;
+            layer = 1;
+        } 
+        
+        else {
+            range.value = 0;
+            layer = 0;
+        }
+    })
+
+})
+
+function citizenLayer () {
+    console.log("citizen");
+}
+
+function cityLayer () {
+    console.log("city")
+}
+
+function stateLayer () {
+    console.log("state")
+}
+
+function federalLayer () {
+    console.log("federal");
+}

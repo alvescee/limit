@@ -8,6 +8,7 @@
     <!-- Styles -->
     <link rel="stylesheet" href="leaflet/leaflet.css"/>
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="layer.css">
 
     <!-- Import library -->
     <script src="leaflet/leaflet.js"></script>
@@ -22,11 +23,15 @@
     <section>
 
         <main>
-            <article class="control"></article>
-        
             <article class="layer">
-                <p>choose layer</p>
-            </article>            
+                <p id="federalLevel">Federal</p>
+                <p id="stateLevel">Estadual</p>
+                <p id="cityLevel">Municipal</p>
+                <p id="citizenLevel">Cidadão</p>
+                <input type=range id="range" value="0">
+            </article>
+
+            <article class="control"></article>
         </main>
 
         <aside class="view">

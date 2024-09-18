@@ -94,7 +94,7 @@ figure.view {
     box-shadow: 0 0 10px 0.1px rgb(122, 122, 122);
 }
 
-input[type="radio"]:checked + label figure {
+input[type="radio"]:checked + label.view figure {
     animation: changeViewColor 1s;
     animation-direction: reverse;
     animation-duration: 1s;
