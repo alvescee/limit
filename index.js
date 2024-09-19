@@ -2,6 +2,7 @@
 import {mock} from "./model/area.js";
 import a from "./model/area.js";
 import addArea from "./addarea.js";
+import onMapClick from "./layer.js";
 
 export var map;
 
@@ -34,25 +35,6 @@ window.addEventListener('load', () => {
     map.on('click', onMapClick);
 })
 
-function onMapClick(e) {
-    
-    if (layer == 0) {
-        citizenLayer();
-    }
-
-    else if (layer == 1) {
-        cityLayer();
-    }
-
-    else if (layer == 2) {
-        stateLayer();
-    }
-
-    else if (layer == 3) {
-        federalLayer();
-    }
-}
-
 window.addEventListener('load', () => {
     
     mock.forEach(area => {
@@ -62,64 +44,93 @@ window.addEventListener('load', () => {
 
 // About the ratio button to change the view
 
-let isPass = false;
-let isSelectingText = false;
+let isRangeSelect = false;
 let positionInitialX = 0;
 const durationInAnimationUp = 0.3;
+let inputSelect = 0;
 
 window.addEventListener('load', () => {
 
-    const input = elements.ratio();
     const sect = elements.sect();
+    const inputs = elements.ratio();
 
-    input[0].addEventListener('change', () => {
-        smoothScrollBy(-1)
+    inputs.forEach(e => {
+        e.addEventListener('click', onClickInInput);
     })
 
-    input[1].addEventListener('change', () => {
-        smoothScrollBy(1)
-    })
-
-    sect.addEventListener("mouseup", action => {
-
-        if (isSelectingText == true) {
-            return;
-        }
-
-        const direction = action.screenX - positionInitialX;
-
-        // To left
-        if (direction > 10 && !input[0].checked) {
-            input[0].checked = true;
-            smoothScrollBy(-1)
-        }
-
-        // To right
-        else if (direction < -10 && !input[1].checked) {
-            input[1].checked = true;
-            smoothScrollBy(1)
-        }
-    })
+    sect.addEventListener("mouseup", onPassSide)
 
     sect.addEventListener("mousedown", action => {
         positionInitialX = action.screenX;
     })
 
-    document.addEventListener("selectionchange", e => {
-
-        isSelectingText = true;
-
-        setTimeout(() => {
-            isSelectingText = false;
-        }, 100);
+    elements.range().addEventListener('mousedown', e => {
+        isRangeSelect = true;
     })
 
+    elements.range().addEventListener('mouseup', () =>{
+        setTimeout(() => {
+            isRangeSelect = false;
+        }, 300);
+    })
 })
+
+function onClickInInput (action) {
+    
+    const inputs = Array.from(elements.ratio());
+    const selectElement = inputs.find(el => el.checked == true);
+    const index = inputs.indexOf(selectElement);
+
+    smoothScrollBy(index - inputSelect);
+
+    inputSelect = index;
+}
+
+function onPassSide (action) {
+
+    if (isRangeSelect) {return;}
+
+    const allInput = elements.ratio();
+
+    const distance = action.screenX - positionInitialX;
+
+    if (10 > distance < -10) {return;}
+
+    const isToLeft = (distance > 10) ? true : false;
+
+    if (isToLeft && allInput[0].checked) {
+        return;
+    }
+
+    if (!isToLeft && allInput[allInput.length - 1].checked) {
+        return;
+    }
+
+    if (isToLeft) {
+        smoothScrollBy(-1);
+    }
+
+    else {
+        smoothScrollBy(1);
+    }
+
+    changeInput(isToLeft);
+}
+
+function changeInput (isToLeft) {
+    const ratios = Array.from(elements.ratio());
+    const input = ratios.find(x => x.checked == true);
+    const index = ratios.indexOf(input);
+
+    ratios[(isToLeft) ? index -1 : index + 1].checked = true;
+}
 
 function smoothScrollBy(direct) {
 
+    const inputs = elements.ratio().length;
+
     const element = elements.main();
-    const x = element.scrollWidth * direct;
+    const x = element.scrollWidth * direct / inputs;
 
     const startX = element.scrollLeft;
     const endX = startX + x;
@@ -145,7 +156,7 @@ function smoothScrollBy(direct) {
 
 // Choose layer
 
-var layer = 0;
+export var layer = 2;
 
 window.addEventListener('load', () => {
 
@@ -175,19 +186,3 @@ window.addEventListener('load', () => {
     })
 
 })
-
-function citizenLayer () {
-    console.log("citizen");
-}
-
-function cityLayer () {
-    console.log("city")
-}
-
-function stateLayer () {
-    console.log("state")
-}
-
-function federalLayer () {
-    console.log("federal");
-}

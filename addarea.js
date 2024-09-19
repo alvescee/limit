@@ -1,6 +1,6 @@
 import {elements, map} from "./index.js";
 
-let allLayer = [];
+export let allLayer = [];
 
 export default function addArea (area) {
 

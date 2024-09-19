@@ -23,26 +23,36 @@
     <section>
 
         <main>
+            <article class="control"></article>
+
             <article class="layer">
                 <p id="federalLevel">Federal</p>
                 <p id="stateLevel">Estadual</p>
                 <p id="cityLevel">Municipal</p>
                 <p id="citizenLevel">Cidadão</p>
-                <input type=range id="range" value="0">
+                <input type=range id="range" value="66">
             </article>
 
-            <article class="control"></article>
+            <article class="action"></article>
         </main>
 
         <aside class="view">
+            
             <input checked id="control" value="control" class="view" name="choose" type="radio">
             <label class="view" for="control">
                 <figure class="view"></figure>
             </label>
-            <input class="view" id="layer" value="layer" class="view" name="choose" type="radio">
+
+            <input id="layer" value="layer" class="view" name="choose" type="radio">
             <label class="view" for="layer">
                 <figure class="view"></figure>
             </label>
+            
+            <input id="action" value="action" class="view" name="choose" type="radio">
+            <label class="view" for="action">
+                <figure class="view"></figure>
+            </label>
+
         </aside>
     </section>
 </body>
