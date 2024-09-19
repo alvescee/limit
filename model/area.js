@@ -13,8 +13,10 @@ export default class area {
         this.points.push({x: x, y: y});
     }
 
-    removePoint (p) {
-        this.points.splice(p, 1);
+    removePoint (lat, lng) {
+        const point = this.points.filter(p => p.x == lat && p.y == lng);
+        const index = this.points.indexOf(point[0]);
+        this.points.splice(index, 1)
     }
 
     getPoints () {
@@ -38,7 +40,7 @@ export default class area {
     }
 }
 
-const categorys = {
+export const categorys = {
     1: {type: "Residência", color: "#ff8c00"},
     2: {type: "Preservação", color: "#6fff00"},
     3: {type: "Transporte", color: "#005dfd"},
@@ -78,7 +80,6 @@ function make () {
     a4.addPoint(-22.279216316749473, -42.531476817098564);
     a4.addPoint(-22.292550602217617, -42.52829138499229);
     a4.addPoint(-22.290883955643128, -42.536876502724915);
-    mock[3] = a4;
 }
 
 make();

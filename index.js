@@ -3,6 +3,7 @@ import {mock} from "./model/area.js";
 import a from "./model/area.js";
 import addArea from "./addarea.js";
 import onMapClick from "./layer.js";
+import buildState from "./js/state.js"
 
 export var map;
 
@@ -16,7 +17,9 @@ export const elements = {
     article: n => document.querySelector('article.' + n),
     control: () => document.querySelector('article.control'),
     main: () => document.querySelector('main'),
-    range: () => document.querySelector('#range')
+    range: () => document.querySelector('#range'),
+    action: () => document.querySelector('form.action'),
+    pointsState: () => document.querySelector('div.elementsPoints')
 }
 
 // About the map
@@ -156,7 +159,7 @@ function smoothScrollBy(direct) {
 
 // Choose layer
 
-export var layer = 2;
+export var layer = 0;
 
 window.addEventListener('load', () => {
 
@@ -171,6 +174,7 @@ window.addEventListener('load', () => {
         
         else if (range.value > 51) {
             range.value = 66;
+            buildState();
             layer = 2;
         } 
         

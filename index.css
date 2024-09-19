@@ -19,6 +19,8 @@ body {
 
     background-color: var(--primary);
     user-select: none;
+
+    overflow: hidden;
 }
 
 body, body * {
@@ -132,15 +134,15 @@ article.control {
     flex: none;
 }
 
-article.control::-webkit-scrollbar {
+*::-webkit-scrollbar {
     width: 10px;  
 }
   
-article.control::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
     background: transparent;
 }
   
-article.control::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
     background-color: gray;
     border-radius: 20px;
     border: 3px solid var(--primary);
@@ -203,15 +205,4 @@ article.layer {
     to {
         transform: translateY(0);
     }
-}
-
-article.action {
-    position: relative;
-    height: 95%;
-    background-color: var(--primary);
-    margin-bottom: 5%;
-    margin-top: 5%;
-
-    width: 100%;
-    flex: none; 
 }
