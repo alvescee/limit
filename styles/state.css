@@ -10,9 +10,27 @@ form.action {
 
     display: grid;
 
-    grid-template-rows: 1fr 15fr 1fr;
+    grid-template-rows: 1fr 1fr 15fr 1fr;
     grid-template-columns: 1fr;
     place-items: center;
+}
+
+form.action select {
+    width: 90%;
+    border-radius: 10px;
+    margin-top: 4%;
+    height: 70%;
+    box-shadow: 0 0 4px 1px var(--other);
+    background-color: var(--primary);
+    outline: none;
+}
+
+form.action optgroup {
+    border-radius: 10%;
+}
+
+form.action select:hover, form.action input:hover {
+    box-shadow: 0 0 10px 1px var(--other);
 }
 
 form.action input {
@@ -22,7 +40,7 @@ form.action input {
     outline: none;
     border-radius: 2%;
     background-color: var(--primary);
-    box-shadow: 0 0 10px 1px var(--other);
+    box-shadow: 0 0 4px 1px var(--other);
     text-indent: 10px;
     padding-left: 4px;
     padding-right: 4px;

@@ -14,8 +14,12 @@ export default function (act) {
 }
 
 function createArea (e, name, points) {
+
+    const selectElement = document.querySelector('#selectCategory');
     
-    addArea(new a(name.value, 2, area.points));
+    const selected = Array.from(selectElement.children[0].children).filter(x => x.selected == true);
+    
+    addArea(new a(name.value, selected[0].value, area.points));
     area = new a();
 
     Array.from(points.children).forEach(e => {
