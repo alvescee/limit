@@ -1,4 +1,4 @@
-import {elements, map} from "./index.js";
+import {elements, map, clickInAnChild, slideInX} from "./index.js";
 
 export let allLayer = [];
 
@@ -9,7 +9,7 @@ export default function addArea (area) {
 
     const geoJsonLayer = areaInMap(area);
 
-    const inControl = areaInControl(area, control, id, geoJsonLayer[0]._leaflet_id, geoJsonLayer[1]);
+    const inControl = areaInControl(area, control, id, geoJsonLayer[0]._leaflet_id, geoJsonLayer);
 
     allLayer.push([geoJsonLayer, inControl]);
 }
@@ -19,11 +19,11 @@ function backAreaInControl (id) {
     const control = elements.control();
     const children = Array.from(control.children);
 
-    if (children[0].getAttribute('data-leaflet') == id) {
+    if (children[0].children[0].getAttribute('data-leaflet') == id) {
         return;
     }
 
-    const node = children.find(e => e.getAttribute('data-leaflet') == id);
+    const node = children.find(e => e.children[0].getAttribute('data-leaflet') == id);
 
     node.style.animation = 'moveElement 0.3s'
 
@@ -34,13 +34,16 @@ function backAreaInControl (id) {
     control.insertBefore(node, children[0]);
 }
 
+let positionInitial;
+
 function areaInControl (area, control, id, leaflet, e) {
+
+    const figureToremove = document.createElement('figure');
 
     // Add a figure
     const figure = document.createElement('figure');
     figure.classList = "area";
     figure.id = "a" + id;
-    figure.setAttribute('data-id', id);
     figure.setAttribute('data-leaflet', leaflet);
 
     // Set color with change the opacity
@@ -49,8 +52,7 @@ function areaInControl (area, control, id, leaflet, e) {
     // Function to create p
     const newP = (className, idName, message) => {
         const p = document.createElement('p');
-        p.classList = className;
-        p.id = idName + id;            
+        p.classList = className;       
         p.innerText = message;
 
         figure.appendChild(p);
@@ -62,13 +64,43 @@ function areaInControl (area, control, id, leaflet, e) {
     // Add the category text
     newP("category", "c", area.category.type);
 
-    control.appendChild(figure);
+    function removeElement () {
+        figure.remove();
+        map.removeLayer(e[0]);
+    }
+
+    figureToremove.appendChild(figure);
+    control.appendChild(figureToremove)
 
     figure.addEventListener('mouseenter', () => {
-        map.fitBounds(e);
+        map.fitBounds(e[1]);
     })
 
-    return figure;
+    const removeBehind = document.createElement('div');
+    removeBehind.classList = 'removeBehind';
+    figureToremove.append(removeBehind);
+
+    figureToremove.addEventListener('click', act => {
+
+        if ((positionInitial - act.clientX) > 30) {
+            slideInX(1, 2, figureToremove, 0.2);
+
+            setTimeout(() => {
+                removeElement();   
+            }, 200);
+        }
+
+        setTimeout(() => {
+            clickInAnChild(false);
+        }, 300);
+    })
+
+    figureToremove.addEventListener('mousedown', act => {
+        clickInAnChild(true);
+        positionInitial = act.clientX;
+    })
+
+    return figureToremove;
 }
 
 function areaInMap (area) {

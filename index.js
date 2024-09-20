@@ -52,6 +52,11 @@ window.addEventListener('load', () => {
 
 let positionInitialX = 0;
 const durationInAnimationUp = 0.3;
+var clickInAnChildren = false;
+
+export function clickInAnChild (b) {
+    clickInAnChildren = b;
+}
 
 window.addEventListener('load', () => {
 
@@ -82,11 +87,13 @@ function onClickInInput (action) {
 
 function onPassSide (action) {
 
+    if (clickInAnChildren) {return;}
+
     const allInput = elements.ratio();
 
     const distance = action.screenX - positionInitialX;
 
-    if (10 > distance < -10) {return;}
+    if (10 > distance && distance > -10) {return;}
 
     const isToLeft = (distance > 10) ? true : false;
 
@@ -118,11 +125,12 @@ function changeInput (isToLeft) {
 }
 
 function smoothScrollBy(direct) {
+    slideInX(direct, elements.ratio().length, elements.main(), durationInAnimationUp)
+}
 
-    const inputs = elements.ratio().length;
+export function slideInX (direct, quantity, element, duration) {
 
-    const element = elements.main();
-    const x = element.scrollWidth * direct / inputs;
+    const x = element.scrollWidth * direct / quantity;
 
     const startX = element.scrollLeft;
     const endX = startX + x;
@@ -132,11 +140,11 @@ function smoothScrollBy(direct) {
     function step(currentTime) {
 
         const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / (durationInAnimationUp * 1000), 1);
+        const progress = Math.min(elapsed / (duration * 1000), 1);
         const scrollX = startX + (endX - startX) * progress;
         element.scrollLeft = scrollX;
   
-        if (elapsed < (durationInAnimationUp * 1000)) {
+        if (elapsed < (duration * 1000)) {
             requestAnimationFrame(step);
         } else {
             element.scrollLeft = endX;

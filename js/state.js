@@ -22,6 +22,8 @@ function createArea (e, name, points) {
         e.remove();
     });
 
+    updateArea();
+
     name.value = '';
 }
 
