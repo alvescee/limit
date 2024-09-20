@@ -5,12 +5,13 @@ export let allLayer = [];
 export default function addArea (area) {
 
     const control = elements.control();
-    const id = area.id;
 
     const geoJsonLayer = areaInMap(area);
 
-    const inControl = areaInControl(area, control, id, geoJsonLayer[0]._leaflet_id, geoJsonLayer);
+    const inControl = areaInControl(area, control, geoJsonLayer[0]._leaflet_id, geoJsonLayer);
 
+    console.log(area);
+    
     allLayer.push([geoJsonLayer, inControl]);
 }
 
@@ -36,14 +37,13 @@ function backAreaInControl (id) {
 
 let positionInitial;
 
-function areaInControl (area, control, id, leaflet, e) {
+function areaInControl (area, control, leaflet, e) {
 
     const figureToremove = document.createElement('figure');
 
     // Add a figure
     const figure = document.createElement('figure');
     figure.classList = "area";
-    figure.id = "a" + id;
     figure.setAttribute('data-leaflet', leaflet);
 
     // Set color with change the opacity
