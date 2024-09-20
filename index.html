@@ -25,27 +25,17 @@
 
         <main>
             <article class="control"></article>
-
-            <article class="layer">
-                <p id="federalLevel">Federal</p>
-                <p id="stateLevel">Estadual</p>
-                <p id="cityLevel">Municipal</p>
-                <p id="citizenLevel">Cidadão</p>
-                <input type=range id="range" value="0">
-            </article>
-
-            <form class="action"></form>
+            <form class="action">
+                <input placeholder="Nome da área" type="text">
+                <div class="elementsPoints"></div>
+                <button class="createBtn" type="button">+</button>
+            </form>
         </main>
 
         <aside class="view">
             
             <input checked id="control" value="control" class="view" name="choose" type="radio">
             <label class="view" for="control">
-                <figure class="view"></figure>
-            </label>
-
-            <input id="layer" value="layer" class="view" name="choose" type="radio">
-            <label class="view" for="layer">
                 <figure class="view"></figure>
             </label>
             

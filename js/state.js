@@ -1,35 +1,28 @@
 import { elements } from "../index.js";
 import { categorys } from "../model/area.js";
-import {layer, map} from "../index.js";
+import {map} from "../index.js";
 import { allLayer } from "../addarea.js";
 import addArea from "../addarea.js";
 import a from "../model/area.js";
 
-export default function () {
+export default function (act) {
 
-    const action = elements.action();
-    action.innerHTML = '';
+    const name = document.querySelector('form.action input');
 
-    const inputName = document.createElement('input');
-    inputName.placeholder = "Nome da área"
-
-    const elementsPointsPanel = document.createElement('div');
-    elementsPointsPanel.classList = 'elementsPoints'
-
-    const create = document.createElement('button');
-    create.addEventListener('click', createArea);
-    create.innerText = '+';
-    create.type = 'button';
-    create.classList = 'createBtn'
-
-    action.append(inputName);
-    action.append(elementsPointsPanel);
-    action.append(create);
+    createArea(act, name, document.querySelector('div.elementsPoints'));
 
 }
 
-function createArea (e) {
+function createArea (e, name, points) {
     
+    addArea(new a(name.value, 2, area.points));
+    area = new a();
+
+    Array.from(points.children).forEach(e => {
+        e.remove();
+    });
+
+    name.value = '';
 }
 
 // State level
@@ -45,7 +38,11 @@ function tenDecimal (number) {
     return (number + '').substring(0, 10);
 }
 
-function tempArea (lat, lng) {
+export function tempArea (e) {
+
+    const lat = e.latlng.lat;
+    const lng = e.latlng.lng;
+
     area.addPoint(lat, lng);
 
     const point = document.createElement('div');

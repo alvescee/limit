@@ -2,11 +2,10 @@ export default class area {
 
     points = [];
 
-    constructor (id, name, tax, category) {
-        this.id = id;
+    constructor (name, category, points = []) {
         this.name = name;
-        this.tax = tax;
         this.category = categorys[category];
+        this.points = points;
     }
 
     addPoint (x, y) {
@@ -55,13 +54,13 @@ export const categorys = {
 export var mock = []
 
 function make () {
-    var a1 = new area(1, "Centro", 22.5, 1);
+    var a1 = new area("Centro", 1);
     a1.addPoint(-22.276122811643024, -42.53291144580142);
     a1.addPoint(-22.27702602903907, -42.533651802357);
     a1.addPoint(-22.276967793918082, -42.53287399281397);
     mock[0] = a1;
 
-    var a2 = new area(2, "Teleférico", 32.8, 2);
+    var a2 = new area("Teleférico", 2);
     a2.addPoint(-22.276200674284564, -42.539221117376115);
     a2.addPoint(-22.27913858918164, -42.53550860479309);
     a2.addPoint(-22.276967793918082, -42.53287399281397);
@@ -69,13 +68,13 @@ function make () {
     a2.addPoint(-22.2770492069499, -42.540396861553674);
     mock[1] = a2;
 
-    var a3 = new area(3, "Conselheiro Paulino", 12, 3);
+    var a3 = new area("Conselheiro Paulino", 3);
     a3.addPoint(-22.23140219909813, -42.522694431295804);
     a3.addPoint(-22.23268299147669, -42.52271589090612);
     a3.addPoint(-22.230727803159574, -42.52082756730495);
     mock[2] = a3;
 
-    var a4 = new area(3, "Olaria", 3.76, 7);
+    var a4 = new area("Olaria", 7);
     a4.addPoint(-22.28195712852712, -42.536713435928846);
     a4.addPoint(-22.279216316749473, -42.531476817098564);
     a4.addPoint(-22.292550602217617, -42.52829138499229);

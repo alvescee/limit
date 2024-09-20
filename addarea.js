@@ -9,7 +9,7 @@ export default function addArea (area) {
 
     const geoJsonLayer = areaInMap(area);
 
-    const inControl = areaInControl(area, control, id, geoJsonLayer._leaflet_id);
+    const inControl = areaInControl(area, control, id, geoJsonLayer[0]._leaflet_id, geoJsonLayer[1]);
 
     allLayer.push([geoJsonLayer, inControl]);
 }
@@ -34,7 +34,7 @@ function backAreaInControl (id) {
     control.insertBefore(node, children[0]);
 }
 
-function areaInControl (area, control, id, leaflet) {
+function areaInControl (area, control, id, leaflet, e) {
 
     // Add a figure
     const figure = document.createElement('figure');
@@ -62,48 +62,13 @@ function areaInControl (area, control, id, leaflet) {
     // Add the category text
     newP("category", "c", area.category.type);
 
-    // Add the tax
-    newP("tax", "t", area.tax + "%");
-
     control.appendChild(figure);
 
     figure.addEventListener('mouseenter', () => {
-        map.setView(calcCenterPolygon(area.getPoints()[0]), 16);
+        map.fitBounds(e);
     })
 
     return figure;
-}
-
-function calcCenterPolygon (line) {
-
-    const n = line.length;
-
-    if (n < 3) {
-        throw new Error("Um polígono deve ter pelo menos 3 vértices.");
-    }
-
-    let area = 0;
-    let cx = 0;
-    let cy = 0;
-
-    for (let i = 0; i < n; i++) {
-        const x1 = line[i][0];
-        const y1 = line[i][1];
-        const x2 = line[(i + 1) % n][0];
-        const y2 = line[(i + 1) % n][1];
-
-        const f = x1 * y2 - x2 * y1;
-        area += f;
-        cx += (x1 + x2) * f;
-        cy += (y1 + y2) * f;
-    }
-
-    area /= 2;
-    const factor = 1 / (6 * area);
-    cx *= factor;
-    cy *= factor;
-
-    return [cy, cx];
 }
 
 function areaInMap (area) {
@@ -135,6 +100,7 @@ function areaInMap (area) {
 
     // On functions
     function highlightFeature(e) {
+
         var layer = e.target;
     
         layer.setStyle(makeStyle(1));
@@ -152,7 +118,12 @@ function areaInMap (area) {
         layer.bringToFront();
     }
 
+    var thisE;
+
     function onEachFeature(feature, layer) {
+
+        thisE = layer.getBounds();
+
         layer.on({
             mouseover: highlightFeature,
             mouseout: resetHighlight
@@ -165,5 +136,5 @@ function areaInMap (area) {
         onEachFeature: onEachFeature
     }).addTo(map);
 
-    return geoJsonLayer;
+    return [geoJsonLayer, thisE];
 }

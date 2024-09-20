@@ -2,8 +2,7 @@
 import {mock} from "./model/area.js";
 import a from "./model/area.js";
 import addArea from "./addarea.js";
-import onMapClick from "./layer.js";
-import buildState from "./js/state.js"
+import onMapClick, { tempArea } from "./js/state.js"
 
 export var map;
 
@@ -17,9 +16,9 @@ export const elements = {
     article: n => document.querySelector('article.' + n),
     control: () => document.querySelector('article.control'),
     main: () => document.querySelector('main'),
-    range: () => document.querySelector('#range'),
     action: () => document.querySelector('form.action'),
-    pointsState: () => document.querySelector('div.elementsPoints')
+    pointsState: () => document.querySelector('div.elementsPoints'),
+    btnCreate: () => document.querySelector('button.createBtn')
 }
 
 // About the map
@@ -35,7 +34,11 @@ window.addEventListener('load', () => {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    map.on('click', onMapClick);
+    map.on('click', tempArea);
+
+    elements.btnCreate().addEventListener('click', act => {
+        onMapClick(act);
+    })
 })
 
 window.addEventListener('load', () => {
@@ -47,10 +50,8 @@ window.addEventListener('load', () => {
 
 // About the ratio button to change the view
 
-let isRangeSelect = false;
 let positionInitialX = 0;
 const durationInAnimationUp = 0.3;
-let inputSelect = 0;
 
 window.addEventListener('load', () => {
 
@@ -66,32 +67,20 @@ window.addEventListener('load', () => {
     sect.addEventListener("mousedown", action => {
         positionInitialX = action.screenX;
     })
-
-    elements.range().addEventListener('mousedown', e => {
-        isRangeSelect = true;
-    })
-
-    elements.range().addEventListener('mouseup', () =>{
-        setTimeout(() => {
-            isRangeSelect = false;
-        }, 300);
-    })
 })
 
 function onClickInInput (action) {
     
     const inputs = Array.from(elements.ratio());
-    const selectElement = inputs.find(el => el.checked == true);
+    const selectElement = inputs.find(el => el.checked == false);
     const index = inputs.indexOf(selectElement);
 
-    smoothScrollBy(index - inputSelect);
-
-    inputSelect = index;
+    if (index == 0) {
+        smoothScrollBy(1)
+    } else {smoothScrollBy(-1)}
 }
 
 function onPassSide (action) {
-
-    if (isRangeSelect) {return;}
 
     const allInput = elements.ratio();
 
@@ -155,38 +144,4 @@ function smoothScrollBy(direct) {
     }
   
     requestAnimationFrame(step);
-}  
-
-// Choose layer
-
-export var layer = 0;
-
-window.addEventListener('load', () => {
-
-    const range = elements.range();
-
-    range.addEventListener('click', e => {
-        
-        if (range.value > 81) {
-            range.value = 100;
-            layer = 3;
-        } 
-        
-        else if (range.value > 51) {
-            range.value = 66;
-            buildState();
-            layer = 2;
-        } 
-        
-        else if (range.value > 17) {
-            range.value = 34;
-            layer = 1;
-        } 
-        
-        else {
-            range.value = 0;
-            layer = 0;
-        }
-    })
-
-})
+}
